@@ -40,6 +40,43 @@ function createUser(req, res, callback) {
 	});
 };
 
+function findUser(req, res, callback) {
+	var userAccount = {
+		"Username": req.body.Username,
+		"Password": req.body.Password
+	};
+
+	async.waterfall([
+		function (next) {
+			req.db.collection(USERS).findOne({"Username": userAccount.Username}, function (err, result) {
+				if (!result) {
+					next("Account with this username does not exist");
+				} else {
+					bcrypt.compare(userAccount.Password, result.Password, function (err, res) {
+						next(err, res, result);
+					});
+				}
+			});
+		}
+	],
+		function (err, response, account) {
+			if (err) {
+				res.send(200, {"Error": err});
+			} else if (!response) {
+				res.send(404, {"Error": "User not found"});
+			} else {
+				var curAccount = {
+					"Username": account.Username,
+					"First_Name": account.First_Name,
+					"Last_Name": account.Last_Name,
+					"Email": account.Email,
+					"id": account._id
+				};
+				res.send(200, curAccount);
+			}
+		});
+};
+
 function checkExists(db, account, callback) {
 	async.waterfall([
 		function (next) {
@@ -83,3 +120,4 @@ function hashPassword(password, callback) {
 };
 
 module.exports.createUser = createUser;
+module.exports.findUser = findUser;
