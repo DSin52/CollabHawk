@@ -31,7 +31,6 @@ function createUser(req, res, callback) {
 			res.send(res.statusCode, {"Error": err});
 			throw err;
 		} else {
-			console.log(user);
 			res.send(201, {"userKey": user[0]._id});
 			if (callback) {
 				callback();
