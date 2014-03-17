@@ -101,7 +101,6 @@ function checkExists(db, account, callback) {
 };
 
 function hashPassword(password, callback) {
-	console.log(password);
 	async.waterfall([
 		function (next) {
 			bcrypt.genSalt(3, next);
