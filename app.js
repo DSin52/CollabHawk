@@ -53,9 +53,12 @@ app.post("/chat/join/:room", function (req, res) {
 	});
 });
 
-app.get("/chat/:room", function (req, res) {
-	var numClients = app.io.sockets.clients(req.params.room).length;
-	console.log("Clients: " + numClients);
+app.post("/chat/clients", function (req, res) {
+	var roomNames = req.body.rooms;
+	var numClients = [];
+	for (var i = 0; i < roomNames.length; i++) {
+		numClients.push(app.io.sockets.clients(roomNames[i).length);
+	}
 	res.send(200, {"num_clients": numClients});
 });
 
