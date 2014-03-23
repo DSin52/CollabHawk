@@ -54,10 +54,8 @@ app.post("/chat/join/:room", function (req, res) {
 });
 
 app.post("/chat/clients", function (req, res) {
-	var roomNames = req.body.rooms[0].split(",");
+	var roomNames = req.body.rooms.split(",");
 	var numClients = [];
-	console.log(roomNames.length);
-	console.log(roomNames[0]);
 	for (var i = 0; i < roomNames.length; i++) {
 		numClients[i] = app.io.sockets.clients(roomNames[i]).length;
 	}
