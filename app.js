@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -16,6 +15,7 @@ app.http().io()
 
 // all environments
 app.set('port', process.env.PORT || 3000);
+
 app.use(function (req, res, next) {
 	MongoClient.connect("mongodb://127.0.0.1:27017/CollabHawk", function (err, db) {
 		if (err) {
@@ -28,80 +28,66 @@ app.use(function (req, res, next) {
 	});
 });
 
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-app.use(express.favicon());
-app.use(express.logger('dev'));
-app.use(express.json());
 app.use(express.bodyParser());
-app.use(express.urlencoded());
-app.use(express.methodOverride());
-app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-// Send client html.
-app.get('/', function(req, res) {
-    res.render("index");
-});
+/*
+ * API Endpoints
+ * ===============================================================================
+ */
+app.post("/user/create", userAPI.createUser);
 
-app.post("/user/create", function (req, res) {
-	userAPI.createUser(req, res);
-});
-
-app.post("/user/login", function (req, res) {
-	userAPI.findUser(req, res);
-});
+app.post("/user/login", userAPI.findUser);
 
 app.post("/chat/join/:room", function (req, res) {
 	chatAPI.getAllMessages(_db, function (err, results) {
 		if (err) {
-			res.send(500);
-			throw err;
+			res.send(500, err);
 		} else {
 			res.send(200, results);
 		}
 	});
 });
 
-app.post("/chat/message/:room", function (req, res) {
-	chatAPI.postMessage(req, res);
-});
+app.post("/chat/message/:room", chatAPI.postMessage);
 
-app.get("/test", function (req, res) {
-	chatAPI.getAllMessages(_db, "Rust Library", function (err, result) {
-		res.send(result);
-	});
-})
-
+/*
+ * Socket Endpoints
+ * ===============================================================================
+ */
 app.io.route("join_room", function (req) {
-	console.log(req.data);
 	req.io.join(req.data);
 	app.io.room(req.data).broadcast("num_clients", {
 		"clients": app.io.sockets.clients(req.data).length,
 	});
+	console.log("Number connected: " + app.io.sockets.clients(req.data).length);
 	chatAPI.getAllMessages(_db, req.data, function (err, results) {
-		console.log(results);
 			req.io.emit("joined_room", {"Username": req.data.Username, "messages": results});
 	});
 });
 
 app.io.route("add_message", function (req) {
-	//was app before
 	req.io.room(req.data.room).broadcast("new_message", {
 		"Username": req.data.Username,
 		"Message": req.data.Message
 	});
-	chatAPI.postMessage(_db, req.data, function () {
-		req.io.emit("added_message", {"Username": req.data.Username, "Message": req.data.Message});
+	console.log("Username: " + req.data.Username + " said: " + req.data.Message);
+	chatAPI.postMessage(_db, req.data, function (err) { 
+		if (err) {
+			console.log(err);
+		} else {
+			req.io.emit("added_message", {"Username": req.data.Username, "Message": req.data.Message});
+		}
 	});
 });
 
 app.io.route("leave_room", function (req) {
 	req.io.leave(req.data);
+	console.log("User left room");
 	app.io.room(req.data).broadcast("num_clients", {
 		"message": app.io.sockets.clients(req.data).length
 	});

@@ -28,14 +28,10 @@ function createUser(req, res, callback) {
 	],
 	function (err, user) {
 		if (err) {
-			res.send(res.statusCode, {"Error": err});
-			throw err;
+			return res.send(res.statusCode, {"Error": err});
+			console.log(err);
 		} else {
-			console.log(user);
-			res.send(201, {"userKey": user[0]._id});
-			if (callback) {
-				callback();
-			}
+			return res.send(201, {"userKey": user[0]._id});
 		}
 	});
 };
