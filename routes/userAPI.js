@@ -28,11 +28,7 @@ function createUser(req, res, callback) {
 	],
 	function (err, user) {
 		if (err) {
-<<<<<<< HEAD
-			res.send(res.statusCode, {"Error": err});
-=======
 			return res.send(res.statusCode, {"Error": err});
->>>>>>> 9cc435dca68d3e59ec576482f3b3e33fae4c9206
 			console.log(err);
 		} else {
 			return res.send(201, {"userKey": user[0]._id});
