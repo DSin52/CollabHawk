@@ -75,7 +75,6 @@ app.io.route("add_message", function (req) {
 		"Username": req.data.Username,
 		"Message": req.data.Message
 	});
-	console.log("Username: " + req.data.Username + " said: " + req.data.Message);
 	chatAPI.postMessage(_db, req.data, function (err) { 
 		if (err) {
 			console.log(err);

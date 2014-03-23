@@ -1,10 +1,21 @@
 {
-  "name": "application-name",
+  "name": "CollabHawk",
   "version": "0.0.1",
   "private": true,
+  "author": "Divit Singh",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "predeploy": "echo CollabHawk is now running!",
+    "postdeploy": "echo CollabHawk will now be terminating!"
   },
+  "keywords": [
+    "server",
+    "node",
+    "android",
+    "ad-hoc",
+    "google_places",
+    "community"
+    ],
   "dependencies": {
     "express.io": "*",
     "ejs": "*",
