@@ -54,6 +54,7 @@ app.post("/chat/join/:room", function (req, res) {
 });
 
 app.post("/chat/clients", function (req, res) {
+	//console.log(req.body.rooms);
 	var roomNames = req.body.rooms.split("\t");
 	var numClients = [];
 	for (var i = 0; i < roomNames.length; i++) {
@@ -81,7 +82,6 @@ app.io.route("join_room", function (req) {
 });
 
 app.io.route("add_message", function (req) {
-
 	req.io.room(req.data.room).broadcast("new_message", {
 		"Username": req.data.Username,
 		"Message": req.data.Message

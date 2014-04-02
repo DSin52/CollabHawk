@@ -76,13 +76,14 @@ function findUser(req, res, callback) {
 function checkExists(db, account, callback) {
 	async.waterfall([
 		function (next) {
-			db.collection(USERS).findOne({"Email": account.Email}, next);
+			db.collection(USERS).findOne({"Username": account.Username}, next);
 		},
 		function (user, next) {
 			if (user) {
-				next("Email already exists!");
+				next("Username already exists!");
 			} else {
-				db.collection(USERS).findOne({"Username": account.Username}, next);
+				//db.collection(USERS).findOne({"Username": account.Username}, next);
+				callback();
 			}
 		}
 	],
