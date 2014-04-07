@@ -1,12 +1,12 @@
 {
-  "name": "CollabHawk",
+  "name": "Klabr",
   "version": "0.0.1",
   "private": true,
   "author": "Divit Singh",
   "scripts": {
     "start": "node app.js",
-    "predeploy": "echo CollabHawk is now running!",
-    "postdeploy": "echo CollabHawk will now be terminating!"
+    "predeploy": "echo Klabr is now running!",
+    "postdeploy": "echo Klabr will now be terminating!"
   },
   "keywords": [
     "server",
@@ -21,6 +21,7 @@
     "ejs": "*",
     "bcrypt": "*",
     "async": "*",
-    "mongodb": "*"
+    "mongodb": "*",
+    "forever": "*"
   }
 }

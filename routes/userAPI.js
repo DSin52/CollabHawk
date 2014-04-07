@@ -4,7 +4,6 @@ var USERS = "Users";
 
 function createUser(req, res, callback) {
 	var userAccount = {
-		"Email": req.body.Email,
 		"First_Name": req.body.First_Name,
 		"Last_Name": req.body.Last_Name,
 		"Username": req.body.Username,
@@ -65,7 +64,6 @@ function findUser(req, res, callback) {
 					"Username": account.Username,
 					"First_Name": account.First_Name,
 					"Last_Name": account.Last_Name,
-					"Email": account.Email,
 					"id": account._id
 				};
 				res.send(200, curAccount);
@@ -82,7 +80,6 @@ function checkExists(db, account, callback) {
 			if (user) {
 				next("Username already exists!");
 			} else {
-				//db.collection(USERS).findOne({"Username": account.Username}, next);
 				callback();
 			}
 		}

@@ -17,7 +17,7 @@ app.http().io()
 app.set('port', process.env.PORT || 3000);
 
 app.use(function (req, res, next) {
-	MongoClient.connect("mongodb://127.0.0.1:27017/CollabHawk", function (err, db) {
+	MongoClient.connect("mongodb://127.0.0.1:27017/Klabr", function (err, db) {
 		if (err) {
 			throw err;
 		}
@@ -54,7 +54,6 @@ app.post("/chat/join/:room", function (req, res) {
 });
 
 app.post("/chat/clients", function (req, res) {
-	//console.log(req.body.rooms);
 	var roomNames = req.body.rooms.split("\t");
 	var numClients = [];
 	for (var i = 0; i < roomNames.length; i++) {
