@@ -4,8 +4,6 @@ var USERS = "Users";
 
 function createUser(req, res, callback) {
 	var userAccount = {
-		"First_Name": req.body.First_Name,
-		"Last_Name": req.body.Last_Name,
 		"Username": req.body.Username,
 		"Password": req.body.Password
 	};
@@ -62,8 +60,6 @@ function findUser(req, res, callback) {
 			} else {
 				var curAccount = {
 					"Username": account.Username,
-					"First_Name": account.First_Name,
-					"Last_Name": account.Last_Name,
 					"id": account._id
 				};
 				res.send(200, curAccount);
